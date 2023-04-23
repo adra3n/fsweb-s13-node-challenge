@@ -33,8 +33,21 @@ router.put(
   '/:id',
   middleware.checkActionId,
   middleware.checkActionPayload,
-  async (req, res, next) => {}
+  async (req, res, next) => {
+    try {
+      const updatedAction = await actionsModel.update(
+        req.params.id,
+        req.validAction
+      )
+      res.json(updatedAction)
+    } catch (error) {
+      next(error)
+    }
+  }
 )
-router.delete('/:id', middleware.checkActionId, (req, res, next) => {})
+router.delete('/:id', middleware.checkActionId, async (req, res, next) => {
+  try {
+  } catch (error) {}
+})
 
 module.exports = router
