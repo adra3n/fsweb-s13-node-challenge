@@ -47,7 +47,11 @@ router.put(
 )
 router.delete('/:id', middleware.checkActionId, async (req, res, next) => {
   try {
-  } catch (error) {}
+    await actionsModel.remove(req.params.id)
+    res.json({ message: `action silindi. id:${req.params.id}` })
+  } catch (error) {
+    next(error)
+  }
 })
 
 module.exports = router
