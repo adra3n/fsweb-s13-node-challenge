@@ -3,7 +3,7 @@ const actionsModel = require('./actions-model')
 
 async function checkActionId(req, res, next) {
   try {
-    const { id } = req.body
+    const { id } = req.params
     const actionExists = await actionsModel.get(id)
     if (!actionExists) {
       res.status(404).json({ message: 'action bulunamadı' })
