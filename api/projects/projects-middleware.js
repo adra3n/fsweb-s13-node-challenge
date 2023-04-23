@@ -19,7 +19,7 @@ async function checkProjectId(req, res, next) {
 
 function checkProjectPayload(req, res, next) {
   try {
-    const { name, description, completed } = req.params
+    const { name, description, completed } = req.body
     if (!name || !description || completed == undefined) {
       res.status(400).json({ message: 'eksik alan' })
     } else {

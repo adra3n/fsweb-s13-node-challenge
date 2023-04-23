@@ -23,7 +23,8 @@ router.get('/:id', middleware.checkActionId, (req, res, next) => {
 
 router.post('/', middleware.checkActionPayload, async (req, res, next) => {
   try {
-    const insertedAction = await actionsModel.insert(req.validAction)
+    let { validAction } = req
+    const insertedAction = await actionsModel.insert(validAction)
     res.status(201).json(insertedAction)
   } catch (error) {
     next(error)
