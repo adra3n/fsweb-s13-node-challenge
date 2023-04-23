@@ -3,11 +3,38 @@
 const router = require('express').Router()
 
 const actionsModel = require('./actions-model')
+const middleware = require('./actions-middlware')
 
-router.get('/', (req, res, next) => {})
-router.get('/:id', (req, res, next) => {})
-router.post('/', (req, res, next) => {})
-router.put('/:id', (req, res, next) => {})
-router.delete('/:id', (req, res, next) => {})
+router.get('/', async (req, res, next) => {
+  try {
+    const allActions = await actionsModel.get()
+    res.json(allActions)
+  } catch (error) {
+    next(error)
+  }
+})
+router.get('/:id', middleware.checkActionId, (req, res, next) => {
+  try {
+    res.json(req.action)
+  } catch (error) {
+    next(error)
+  }
+})
+
+router.post('/', middleware.checkActionPayload, async (req, res, next) => {
+  try {
+    const insertedAction = await actionsModel.insert(req.validAction)
+    res.status(201).json(insertedAction)
+  } catch (error) {
+    next(error)
+  }
+})
+router.put(
+  '/:id',
+  middleware.checkActionId,
+  middleware.checkActionPayload,
+  async (req, res, next) => {}
+)
+router.delete('/:id', middleware.checkActionId, (req, res, next) => {})
 
 module.exports = router
